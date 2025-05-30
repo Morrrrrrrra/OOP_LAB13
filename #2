@@ -1,0 +1,62 @@
+using System;
+public interface ITransport
+{
+    int Speed { get; set; }
+    void Drive();
+}
+public class Car : ITransport
+{
+    public int Speed { get; set;}
+    public Car(int speed)
+    {
+        Speed = speed;
+    }
+    public void Drive() =>
+        Console.WriteLine($"Driving a car at {Speed} km/h.");
+}
+public class Motorcycle : ITransport
+{
+    public int Speed { get; set; }
+    public Motorcycle(int speed)
+    {
+        Speed = speed;
+    }
+    public void Drive() =>
+        Console.WriteLine($"Riding a motorcycle at {Speed} km/h.");
+}
+public class Bicycle : ITransport
+{
+    public int Speed { get; set; }
+    public Bicycle(int speed)
+    {
+        Speed = speed;
+    }
+    public void Drive() =>
+        Console.WriteLine($"Riding a bicycle at {Speed} km/h.");
+}
+public class TransportFactory
+{
+    public ITransport CreateTransport(string type, int speed)
+    {
+        return type.ToLower() switch
+        {
+            "car" => new Car(speed),
+            "motorcycle" => new Motorcycle(speed),
+            "bicycle" => new Bicycle(speed),
+            _ => throw new ArgumentException("Unknown transport type.")
+        };
+    }
+}
+class Program
+{
+    static void Main()
+    {
+        var factory = new TransportFactory();
+        ITransport car = factory.CreateTransport("car", 120);
+        car.Drive();
+        ITransport bicycle = factory.CreateTransport("bicycle", 25);
+        bicycle.Drive();
+        ITransport motorcycle = factory.CreateTransport("motorcycle", 90);
+        motorcycle.Drive();
+    }
+}
